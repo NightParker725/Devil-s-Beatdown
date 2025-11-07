@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cproqw5glwxgu"]
+
+[node name="DamageEmitter" type="Area2D"]
