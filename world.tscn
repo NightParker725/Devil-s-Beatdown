@@ -39,3 +39,9 @@ position = Vector2(30, 60)
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(117, 63)
+
+[node name="Barrel2" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(79, 59)
+
+[node name="Barrel3" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(132, 63)
