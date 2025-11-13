@@ -1,0 +1,238 @@
+[gd_scene load_steps=16 format=3 uid="uid://yqdrvbrdmsne"]
+
+[ext_resource type="PackedScene" uid="uid://8ibr1djamdq4" path="res://scenes/characters/character.tscn" id="1_rx5sg"]
+[ext_resource type="Texture2D" uid="uid://c8ntje8ehfvep" path="res://assets/art/characters/Snapper-Sheet.png" id="2_ns7ch"]
+[ext_resource type="Script" uid="uid://cn3os3vkicakn" path="res://scenes/characters/basic_devil.gd" id="2_rqkws"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ns7ch"]
+radius = 4.0
+height = 28.0
+
+[sub_resource type="Animation" id="Animation_ns7ch"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ds2em"]
+resource_name = "hurt"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 26, 27, 28, 29]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_action_complete"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rx5sg"]
+resource_name = "idle"
+length = 0.2
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_rqkws"]
+resource_name = "run"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_qh8b7"]
+resource_name = "fall"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [27]
+}
+
+[sub_resource type="Animation" id="Animation_cnqer"]
+resource_name = "grounded"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.029111953),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [35]
+}
+
+[sub_resource type="Animation" id="Animation_48yyo"]
+resource_name = "land"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [33]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_land_complete"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_yu2sv"]
+resource_name = "death"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [34, 35, 36, 37, 38]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ds2em"]
+_data = {
+&"RESET": SubResource("Animation_ns7ch"),
+&"death": SubResource("Animation_yu2sv"),
+&"fall": SubResource("Animation_qh8b7"),
+&"grounded": SubResource("Animation_cnqer"),
+&"hurt": SubResource("Animation_ds2em"),
+&"idle": SubResource("Animation_rx5sg"),
+&"land": SubResource("Animation_48yyo"),
+&"run": SubResource("Animation_rqkws")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ns7ch"]
+size = Vector2(6, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rqkws"]
+size = Vector2(10, 10)
+
+[node name="BasicDevil" instance=ExtResource("1_rx5sg")]
+collision_layer = 4
+collision_mask = 12
+script = ExtResource("2_rqkws")
+damage = 3
+duration_grounded = 1000.0
+knockback_intensity = 25.0
+knockdown_intensity = 80.0
+max_health = 20
+speed = 15.0
+
+[node name="CharacterSprite" parent="." index="1"]
+texture = ExtResource("2_ns7ch")
+centered = false
+offset = Vector2(-16, -32)
+hframes = 8
+vframes = 5
+
+[node name="CollisionShape2D" parent="." index="2"]
+rotation = 1.5707964
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CapsuleShape2D_ns7ch")
+
+[node name="AnimationPlayer" parent="." index="3"]
+libraries = {
+&"": SubResource("AnimationLibrary_ds2em")
+}
+autoplay = "idle"
+
+[node name="DamageEmitter" parent="." index="4"]
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="DamageEmitter" index="0"]
+position = Vector2(6, -14)
+shape = SubResource("RectangleShape2D_ns7ch")
+
+[node name="DamageReceiver" parent="." index="5"]
+collision_layer = 32
+
+[node name="CollisionShape2D" parent="DamageReceiver" index="0"]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_rqkws")
+
+[editable path="DamageEmitter"]
+[editable path="DamageReceiver"]
