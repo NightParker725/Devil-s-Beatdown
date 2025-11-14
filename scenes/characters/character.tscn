@@ -26,5 +26,13 @@ offset = Vector2(-7, 0)
 
 [node name="DamageReceiver" parent="." instance=ExtResource("4_2qjml")]
 
+[node name="CollateralDamageEmitter" parent="." instance=ExtResource("3_e22cc")]
+
+[node name="KnifeSprite" type="Sprite2D" parent="."]
+
+[node name="ProjectileAim" type="RayCast2D" parent="."]
+target_position = Vector2(100, 0)
+
 [editable path="DamageEmitter"]
 [editable path="DamageReceiver"]
+[editable path="CollateralDamageEmitter"]

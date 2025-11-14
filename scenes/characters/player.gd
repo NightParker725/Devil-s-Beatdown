@@ -4,12 +4,29 @@ extends Character
 
 @onready var enemy_slots : Array = $EnemySlots.get_children()
 
+
+func _ready() -> void:
+	super._ready()
+	anim_attacks = ["punch", "h_punch", "kick", "special"]
+
 func handle_input() -> void:
+	if state == State.DEATH:
+		velocity = Vector2.ZERO
+		return
+
 	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = direction * speed
 	if can_attack() and Input.is_action_just_pressed("attack"):
-		state = State.ATTACK_B
-		attack_combo_index = (attack_combo_index + 1) % anim_attacks.size()
+		if has_knife:
+			state = State.THROW
+		else:
+			state = State.ATTACK_B
+			if is_last_hit_succesful:
+				attack_combo_index = (attack_combo_index + 1) % anim_attacks.size()
+				is_last_hit_succesful = false
+			else:
+				attack_combo_index = 0
+				
 	if can_jump() and Input.is_action_just_pressed("jump"):
 		state = State.TAKEOFF
 	if can_jump_kick() and Input.is_action_just_pressed("attack"):
@@ -36,3 +53,10 @@ func free_slot(enemy: BasicDevil) -> void:
 	)
 	if target_slots.size() == 1:
 		target_slots[0].free_up()
+
+
+func set_heading() -> void:
+	if velocity.x > 0:
+		heading = Vector2.RIGHT
+	elif velocity.x < 0:
+		heading = Vector2.LEFT

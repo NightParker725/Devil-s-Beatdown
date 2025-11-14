@@ -4,9 +4,14 @@ extends CharacterBody2D
 const GRAVITY := 600.0
 
 @export var can_respawn : bool
+@export var can_respawn_knives : bool
 @export var damage : int
+@export var damage_power : int
 @export var jump_intensity : float
 @export var duration_grounded : float
+@export var duration_between_knife_respawn : int
+@export var flight_speed : float
+@export var has_knife : bool
 @export var knockback_intensity: float
 @export var knockdown_intensity : float
 @export var max_health : int
@@ -15,12 +20,15 @@ const GRAVITY := 600.0
 @onready var animation_player := $AnimationPlayer
 @onready var character_sprite := $CharacterSprite
 @onready var collision_shape := $CollisionShape2D
+@onready var collateral_damage_emitter : Area2D = $CollateralDamageEmitter
 @onready var damage_emitter := $DamageEmitter
 @onready var damage_receiver : DamageReceiver = $DamageReceiver
+@onready var knife_sprite := $KnifeSprite
+@onready var projectile_aim : RayCast2D = $ProjectileAim
 
-enum State {IDLE, WALK, ATTACK_B, ATTACK_S, KICK, SPECIAL, ATTACK_X, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH}
+enum State {IDLE, WALK, ATTACK_B, ATTACK_S, KICK, SPECIAL, ATTACK_X, TAKEOFF, JUMP, LAND, JUMPKICK, HURT, FALL, GROUNDED, DEATH, FLY, PREP_ATTACK, THROW}
 
-var anim_attacks := ["punch", "h_punch", "kick", "special"]
+var anim_attacks := []
 
 var anim_map : Dictionary = {
 	State.IDLE : "idle",
@@ -33,29 +41,42 @@ var anim_map : Dictionary = {
 	State.FALL : "fall",
 	State.GROUNDED : "grounded",
 	State.DEATH : "death",
+	State.FLY : "fly",
+	State.PREP_ATTACK : "idle",
+	State.THROW: "throw",
 }
 var attack_combo_index := 0
 
 var current_health = 0
 var height_speed = 0.0
 var height = 0.0
+var heading := Vector2.RIGHT
+var is_last_hit_succesful := false
 var state = State.IDLE
 var time_since_grounded = Time.get_ticks_msec()
+var time_since_knife_dismiss = Time.get_ticks_msec()
 
 func _ready() -> void:
 	damage_emitter.area_entered.connect(on_emit_damage.bind())
 	damage_receiver.damage_received.connect(on_receive_damage.bind())
+	collateral_damage_emitter.area_entered.connect(on_emit_collateral_damage.bind())
+	collateral_damage_emitter.body_entered.connect(on_wall_hit.bind())
 	current_health = max_health
 func _process(delta: float) -> void:
 	handle_input()
 	handle_movement()
 	handle_animations()
 	handle_air_time(delta)
+	handle_prep_attack()
+	set_heading()
 	handle_grounded()
+	handle_knife_respawns()
 	handle_death(delta)
 	flip_sprites()
+	knife_sprite.visible = has_knife
 	character_sprite.position = Vector2.UP * height
-	collision_shape.disabled = state == State.GROUNDED
+	knife_sprite.position = Vector2.UP * height
+	collision_shape.disabled = is_collision_disabled()
 	move_and_slide()
 
 func handle_movement() -> void:
@@ -81,6 +102,13 @@ func handle_death(delta : float) -> void:
 		modulate.a -= delta / 0.5
 		if modulate.a <= 0:
 			queue_free()
+			
+func handle_knife_respawns() -> void:
+	if can_respawn_knives and not has_knife and (Time.get_ticks_msec() - time_since_knife_dismiss > duration_between_knife_respawn):
+		has_knife = true
+
+func handle_prep_attack() -> void:
+	pass
 
 func handle_animations() -> void:
 	if state == State.ATTACK_B:
@@ -102,12 +130,19 @@ func handle_air_time(delta: float) -> void:
 		else:
 			height_speed -= GRAVITY * delta
 
+func set_heading() -> void:
+	pass
+
 func flip_sprites() -> void:
-	if velocity.x > 0:
+	if heading == Vector2.RIGHT:
 		character_sprite.flip_h=false
+		knife_sprite.flip_h = false
+		projectile_aim.scale.x = 1
 		damage_emitter.scale.x = 1
-	elif velocity.x < 0:
+	else:
 		character_sprite.flip_h=true
+		knife_sprite.flip_h = true
+		projectile_aim.scale.x = -1
 		damage_emitter.scale.x = -1
 		
 func can_move() -> bool:
@@ -124,12 +159,19 @@ func can_jump_kick() -> bool:
 	return state == State.JUMP
 
 func can_get_hurt() -> bool:
-	return [State.IDLE, State.WALK, State.TAKEOFF, State.JUMP, State.LAND].has(state)
+	return [State.IDLE, State.WALK, State.TAKEOFF, State.LAND].has(state)
+
+func is_collision_disabled() -> bool:
+	return [State.GROUNDED, State.DEATH, State.FLY].has(state)
 
 
 func on_action_complete() -> void:
 	state = State.IDLE
 	
+func on_throw_complete() -> void:
+	state = State.IDLE
+	has_knife = false
+
 func on_takeoff_complete() -> void:
 	state = State.JUMP
 	height_speed = jump_intensity
@@ -139,18 +181,40 @@ func on_land_complete() -> void:
 	
 func on_receive_damage(damage_amount: int, direction : Vector2, hit_type : DamageReceiver.HitType) -> void:
 	if can_get_hurt():
+		if has_knife:
+			has_knife = false
+			time_since_knife_dismiss = Time.get_ticks_msec()
 		current_health = clamp(current_health - damage_amount, 0, max_health)
 		if current_health == 0 or hit_type == DamageReceiver.HitType.KNOCKDOWN:
 			state = State.FALL
 			height_speed = knockdown_intensity
+			velocity = direction * knockback_intensity
+		elif hit_type == DamageReceiver.HitType.POWERMOVE:
+			state = State.FLY
+			velocity = direction * flight_speed
 		else:
 			state = State.HURT
-		velocity = direction * knockback_intensity
+			velocity = direction * knockback_intensity
 	
 func on_emit_damage(receiver : DamageReceiver) -> void:
 	var hit_type := DamageReceiver.HitType.NORMAL
 	var direction := Vector2.LEFT if receiver.global_position.x < global_position.x else Vector2.RIGHT
+	var current_damage = damage
 	if state == State.JUMPKICK:
 		hit_type = DamageReceiver.HitType.KNOCKDOWN
-	receiver.damage_received.emit(damage, direction, hit_type)
-	
+	if attack_combo_index == anim_attacks.size() - 1:
+		hit_type = DamageReceiver.HitType.POWERMOVE
+		current_damage = damage_power
+	receiver.damage_received.emit(current_damage, direction, hit_type)
+	is_last_hit_succesful = true
+
+func on_emit_collateral_damage(receiver: DamageReceiver) -> void:
+	if receiver != damage_receiver:
+		var direction := Vector2.LEFT if receiver.global_position.x < global_position.x else Vector2.RIGHT
+		receiver.damage_received.emit(0, direction, DamageReceiver.HitType.KNOCKDOWN)
+
+
+func on_wall_hit(_wall: AnimatableBody2D) -> void:
+	state = State.FALL
+	height_speed = knockdown_intensity
+	velocity = -velocity / 2.0

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://yqdrvbrdmsne" path="res://scenes/characters/basic_devil.tscn" id="5_036b0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
-size = Vector2(6, 64)
+size = Vector2(6, 65.5)
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_tlwt5")
@@ -20,46 +20,358 @@ position = Vector2(50, 51)
 [node name="InvisibleWalls" type="Node2D" parent="Camera"]
 position = Vector2(-50, -32)
 
-[node name="LeftWall" type="StaticBody2D" parent="Camera/InvisibleWalls"]
+[node name="LeftWall" type="AnimatableBody2D" parent="Camera/InvisibleWalls"]
 position = Vector2(0, 32)
+collision_layer = 128
+collision_mask = 0
+sync_to_physics = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Camera/InvisibleWalls/LeftWall"]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_tlwt5")
 
-[node name="RightWall" type="StaticBody2D" parent="Camera/InvisibleWalls"]
+[node name="RightWall" type="AnimatableBody2D" parent="Camera/InvisibleWalls"]
 position = Vector2(100, 32)
+collision_layer = 128
+collision_mask = 0
+sync_to_physics = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Camera/InvisibleWalls/RightWall"]
+position = Vector2(0, 0.25)
 shape = SubResource("RectangleShape2D_tlwt5")
 
 [node name="ActorsContainer" type="Node2D" parent="."]
 y_sort_enabled = true
 
 [node name="Player" parent="ActorsContainer" instance=ExtResource("2_fj7yv")]
-position = Vector2(30, 60)
+position = Vector2(31, 60)
+damage_power = 10
+max_health = 100
 
-[node name="BasicDevil" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(163, 60)
+[node name="BasicDevil6" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(105, 65)
 player = NodePath("../Player")
 
-[node name="BasicDevil2" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(189, 57)
+[node name="BasicDevil7" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(120, 76)
 player = NodePath("../Player")
+duration_between_knife_respawn = 2000
+max_health = 45
 
-[node name="BasicDevil5" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(244, 77)
+[node name="BasicDevil10" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(-93, 66)
 player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+max_health = 35
 
-[node name="BasicDevil3" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(98, 54)
+[node name="BasicDevil35" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(-145, 75)
 player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+max_health = 35
 
-[node name="BasicDevil4" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
-position = Vector2(120, 78)
+[node name="BasicDevil36" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(-174, 68)
 player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+max_health = 35
+
+[node name="BasicDevil11" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(-14, 63)
+player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+max_health = 35
+
+[node name="BasicDevil32" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(-42, 77)
+player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+max_health = 35
+
+[node name="BasicDevil19" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(513, 78)
+player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+
+[node name="BasicDevil20" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(501, 64)
+player = NodePath("../Player")
+damage = 3
+duration_between_knife_respawn = 2000
+
+[node name="BasicDevil21" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(589, 79)
+player = NodePath("../Player")
+duration_between_melee_attack = 250
+duration_between_knife_respawn = 2000
+
+[node name="BasicDevil22" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(577, 65)
+player = NodePath("../Player")
+duration_between_melee_attack = 250
+duration_between_knife_respawn = 2000
+
+[node name="BasicDevil23" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(877, 77)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil33" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(1011, 65)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil34" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(1055, 75)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil37" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(1025, 79)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil24" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(865, 63)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil25" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(860, 75)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil26" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(876, 69)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil27" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(847, 68)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil28" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(833, 77)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil29" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(827, 65)
+scale = Vector2(0.5, 0.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 100
+damage = 1
+duration_between_knife_respawn = 2000
+max_health = 25
+
+[node name="BasicDevil8" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(227, 56)
+player = NodePath("../Player")
+duration_between_melee_attack = 250
+damage = 10
+
+[node name="BasicDevil9" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(229, 76)
+player = NodePath("../Player")
+damage = 10
+duration_between_knife_respawn = 2000
+
+[node name="BasicDevil12" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(292, 61)
+player = NodePath("../Player")
+duration_between_melee_attack = 1000
+duration_between_knife_respawn = 2000
+max_health = 30
+
+[node name="BasicDevil13" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(303, 79)
+player = NodePath("../Player")
+duration_between_melee_attack = 150
+duration_between_knife_respawn = 2000
+max_health = 30
+
+[node name="BasicDevil18" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(401, 73)
+scale = Vector2(1.5, 1.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 1000
+duration_prep_melee_attack = 500
+damage = 20
+duration_between_knife_respawn = 2000
+max_health = 100
+
+[node name="BasicDevil30" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(1070, 60)
+scale = Vector2(1.5, 1.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 1000
+duration_prep_melee_attack = 500
+damage = 20
+duration_between_knife_respawn = 2000
+max_health = 100
+
+[node name="BasicDevil31" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(1073, 80)
+scale = Vector2(1.5, 1.5)
+player = NodePath("../Player")
+duration_between_melee_attack = 1000
+duration_prep_melee_attack = 500
+damage = 20
+duration_between_knife_respawn = 2000
+max_health = 100
+
+[node name="BasicDevil14" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(321, 66)
+player = NodePath("../Player")
+duration_between_melee_attack = 475
+damage = 7
+duration_between_knife_respawn = 2000
+max_health = 30
+
+[node name="BasicDevil15" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(739, 70)
+player = NodePath("../Player")
+duration_between_melee_attack = 1000
+duration_between_knife_respawn = 2000
+max_health = 30
+
+[node name="BasicDevil16" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(655, 78)
+player = NodePath("../Player")
+duration_between_melee_attack = 150
+duration_between_knife_respawn = 2000
+max_health = 30
+
+[node name="BasicDevil17" parent="ActorsContainer" node_paths=PackedStringArray("player") instance=ExtResource("5_036b0")]
+position = Vector2(701, 62)
+player = NodePath("../Player")
+duration_between_melee_attack = 475
+damage = 7
+duration_between_knife_respawn = 2000
+max_health = 30
 
 [node name="Barrel" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(145, 69)
+
+[node name="Barrel10" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 84)
+
+[node name="Barrel11" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 79)
+
+[node name="Barrel12" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 74)
+
+[node name="Barrel13" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 70)
+
+[node name="Barrel14" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 66)
+
+[node name="Barrel15" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 63)
+
+[node name="Barrel17" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(389, 82)
+
+[node name="Barrel18" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(416, 77)
+
+[node name="Barrel19" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(402, 64)
+
+[node name="Barrel16" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(251, 59)
+
+[node name="Barrel20" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 84)
+
+[node name="Barrel26" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(704, 73)
+
+[node name="Barrel29" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(905, 69)
+
+[node name="Barrel30" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(938, 78)
+
+[node name="Barrel31" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(1035, 69)
+
+[node name="Barrel32" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(979, 65)
+
+[node name="Barrel33" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(985, 75)
+
+[node name="Barrel34" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(1002, 80)
+
+[node name="Barrel27" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(646, 68)
+rotation = -0.0074841687
+
+[node name="Barrel28" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(548, 74)
+rotation = -0.0074841687
+
+[node name="Barrel21" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 79)
+
+[node name="Barrel22" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 74)
+
+[node name="Barrel23" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 70)
+
+[node name="Barrel24" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 63)
+
+[node name="Barrel25" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(778, 59)
 
 [node name="Barrel2" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(80, 58)
@@ -72,6 +384,9 @@ position = Vector2(86, 65)
 
 [node name="Barrel5" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(214, 72)
+
+[node name="Barrel9" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
+position = Vector2(179, 82)
 
 [node name="Barrel6" parent="ActorsContainer" instance=ExtResource("4_aqk2v")]
 position = Vector2(86, 72)
